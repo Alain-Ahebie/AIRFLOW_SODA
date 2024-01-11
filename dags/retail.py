@@ -31,4 +31,19 @@ def retail():
         dataset_id='retail',
         gcp_conn_id='gcp',
     )
+    
+    gcs_to_raw = aql.load_file(
+        task_id='gcs_to_raw',
+        input_file=File(
+            'gs://alain_online_retail/raw/online_retail.csv',
+            conn_id='gcp',
+            filetype=FileType.CSV,
+        ),
+        output_table=Table(
+            name='raw_invoices',
+            conn_id='gcp',
+            metadata=Metadata(schema='retail')
+        ),
+        use_native_support=False,
+    )
 retail()
